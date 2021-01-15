@@ -28,7 +28,10 @@ public class HttpContextHandler implements HttpHandler {
             String currentSession = sessionHandler.getCurrentSession(httpExchange.getRequestHeaders());
             String sessiondata = sessionHandler.getSessionData(currentSession);
             // TODO filter out html/xss etc (nice practice to do that)
-            String response = HTMLLoader.loadResource("mainpage.html").replace("{SESSIONID}", currentSession).replace("{SESSIONNAME}", sessiondata);
+            StringBuilder sb = new StringBuilder();
+            sessionHandler.getSessionStorage().forEach((s, s2) -> sb.append("- ").append(s2).append(" | ").append(s+" <br>"));
+            String response = HTMLLoader.loadResource("mainpage.html").replace("{SESSIONID}", currentSession).replace("{SESSIONNAME}", sessiondata).replace("{SESSIONLIST}", sb.toString());
+
 
             httpExchange.getResponseHeaders().add("Content-Type", "text/html");
             httpExchange.sendResponseHeaders(200, response.length());

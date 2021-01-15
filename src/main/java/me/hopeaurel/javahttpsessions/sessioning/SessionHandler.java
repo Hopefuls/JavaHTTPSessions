@@ -75,6 +75,10 @@ public class SessionHandler {
     return new CookieParser(headers).getCookie("SESSID");
     }
 
+    public final Map<String, String> getSessionStorage() {
+        return sessionStorage;
+    }
+
 
 
 
